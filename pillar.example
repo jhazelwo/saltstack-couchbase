@@ -1,0 +1,81 @@
+couchbase:
+  server01:
+    # 'server01' is the hostname of the server to install Coudbase on.
+    #
+    # Base name of the exe or rpm Couchbase install file.
+    installer: couchbase-server-enterprise-4.0.0-centos6.x86_64.rpm
+    installer_tmp: /tmp/
+    # TODO: move to kernel check in install.sls
+    index_path: /opt/couchbase/nodeindex/
+    data_path: /opt/couchbase/nodedata/
+    #
+    # Cluster parameters
+    cluster:
+      password: password
+      username: Administrator
+      port: 8091
+      host: localhost
+      ramsize: 1025
+    # Here you define your bucket(s).
+    buckets:
+      default:
+        # Remove the default bucket if present.
+        #  (Newer Couchbase releases do not create a default bucket during install.)
+        ensure: absent
+      prod:
+        # Create bucket named 'prod', disable flush, RAM size 500MB, with password.
+        ensure: present
+        ramsize: 500
+        flush: 0
+        password: hunter2
+      dev:
+        # Create bucket named 'dev', no password, flush enabled, 100MB RAM size.
+        ramsize: 100
+        flush: 1
+      test:
+        # Create bucket named 'test', bucket type is memcached, use defaults for everything else.
+        type: memcached
+      legacy:
+        # Remove bucket 'legacy' if it exists.
+        ensure: absent
+# ...and the end result should be:
+# [root@server01 /]# /opt/couchbase/bin/couchbase-cli bucket-list -c localhost:8091 -u Administrator -p password
+# dev
+#  bucketType: membase
+#  authType: sasl
+#  saslPassword:
+#  numReplicas: 0
+#  ramQuota: 104857600
+#  ramUsed: 38897440
+# prod
+#  bucketType: membase
+#  authType: sasl
+#  saslPassword: hunter2
+#  numReplicas: 0
+#  ramQuota: 524288000
+#  ramUsed: 38266896
+# test
+#  bucketType: memcached
+#  authType: sasl
+#  saslPassword:
+#  numReplicas: 0
+#  ramQuota: 104857600
+#  ramUsed: 0
+# [root@server01 /]#
+  WINSERVER01:
+    # Values for a Windows system. Note the upper-cased hostname!
+    installer: couchbase-server-enterprise_4.0.0-windows_amd64.exe
+    iss_file: couchbase400.iss
+    # Cluster details
+    cluster:
+      password: password
+      username: Administrator
+      port: 8091
+      host: localhost
+      ramsize: 1025
+    buckets:
+      qa:
+        # Create bucket named 'qa', disable flush, RAM size 500MB, no password.
+        ensure: present
+        ramsize: 500
+        flush: 0

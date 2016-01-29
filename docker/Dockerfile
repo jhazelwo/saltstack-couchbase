@@ -12,8 +12,12 @@ RUN mkdir -p /etc/salt/minion.d
 RUN echo "random_reauth_delay: 5" > /etc/salt/minion.d/custom.conf
 # run in master-less mode
 RUN echo "file_client: local" >> /etc/salt/minion.d/custom.conf
+RUN echo "server01" > /etc/salt/minion_id
+ADD pillar_top.sls /srv/pillar/top.sls
 
 RUN echo "alias Apply='/usr/bin/salt-call --local state.apply couchbase.install'" >> /root/.bashrc
 RUN echo "alias Remove='/usr/bin/salt-call --local state.apply couchbase.remove'" >> /root/.bashrc
+
+RUN mkdir -p /srv/pillar/couchbase
 
 CMD /usr/bin/salt-call --local state.highstate -l debug
