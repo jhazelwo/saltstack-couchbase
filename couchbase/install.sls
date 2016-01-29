@@ -31,10 +31,10 @@ install_couchbase:
     - name: {{ installer_path }} /s -f1{{ iss_file }} /debuglog
     {% elif grains['os_family'] == 'RedHat' %}
     - name: /usr/bin/yum -y localinstall {{ installer_path }}
-    {% elif grains['os_family'] == 'Debian' %}
+    {% elif grains['os_family'] == 'Debian' %} # NOTE: This is untested
     - name: /usr/bin/dpkg -y --install {{ installer_path }}
     {% else %}
-    - name: fail_here_unknown_operating_system
+    - name: fail_here_unsupported_kernel_or_os_family
     {% endif %}
     - creates: /opt/couchbase/bin/couchbase-cli
     - require:
@@ -66,7 +66,7 @@ couchbase_cluster_init_statefile:
     - name: /opt/couchbase/etc/.cluster-init
     - require:
       - cmd: couchbase_cluster_init
-remove_installer:
+couchbase_install_completed:
   file.absent:
     - name: {{ installer_path }}
     - require:
