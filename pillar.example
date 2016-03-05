@@ -1,6 +1,6 @@
 couchbase:
   server01:
-    # 'server01' is the hostname of the server to install Coudbase on.
+    # 'server01' is the hostname of the server to install Couchbase on.
     #
     # Base name of the exe or rpm Couchbase install file.
     installer: couchbase-server-enterprise-4.0.0-centos6.x86_64.rpm
