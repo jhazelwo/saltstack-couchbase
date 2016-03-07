@@ -6,7 +6,7 @@ include:
 {# Get the cli() macro #}
 {% from "couchbase/cli.sls" import cli %}
 
-## Get the statefile() macro #}
+{# Get the statefile() macro #}
 {% from "couchbase/statefile.sls" import statefile %}
 
 {# Make less-ugly hostname var #}
